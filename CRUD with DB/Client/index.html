@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="sendData(); return false">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th><input type="text" id = "name"></th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th><input type="email" id = "email"></th>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <th><input type="password" id ="password"></th>
+            </tr>
+            <tr><input type="submit" value = "sign up"></tr>
+
+            
+        </table>
+    </form>
+    <input type="button" value = "get details" onclick="getData()">
+   
+    <form onsubmit="editData(); return false">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th><input type="text" id = "editname"></th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th><input type="email" id = "editemail"></th>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <th><input type="password" id ="editpassword"></th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th><input type="number" id = "editid"></th>
+            </tr>
+            <tr><input type="submit" value = "edit"></tr>
+
+            
+        </table>
+    </form>
+    <form onsubmit="deleteData(); return false">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th><input type="text" id = "delete"></th>
+            </tr>
+            <tr>
+                <th><input type="submit" value = "delete"></th>
+            </tr>
+        </table>
+    </form>
+    <script>
+        function sendData(){
+            const userData = {
+                name : document.getElementById("name").value,
+                email : document.getElementById("email").value,
+                password : document.getElementById("password").value
+            };
+            fetch("http://localhost:3000/user",{
+                method : "POST",
+                headers : {
+                    'Accept': "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+
+                },
+                body : JSON.stringify(userData) 
+
+
+            }).then((data)=>{
+                return data.json()
+            })
+            .then((result)=>{
+                console.log(result);
+            })
+            
+        }
+        function getData(){
+            fetch("http://localhost:3000/user",{
+                method : "GET",
+                headers : {
+                    'Accept': "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+
+                },
+                
+
+
+            }).then((data)=>{
+                return data.json()
+            })
+            .then((result)=>{
+                console.log(result);
+            })
+        }
+        function editData(){
+            const userData = {
+                name : document.getElementById("editname").value,
+                email : document.getElementById("editemail").value,
+                password : document.getElementById("editpassword").value,
+                userId : document.getElementById("editid").value
+            };
+            fetch("http://localhost:3000/user/"+ userData.userId,{
+                method : "PUT",
+                headers : {
+                    'Accept': "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+
+                },
+                body : JSON.stringify(userData) 
+
+
+            }).then((data)=>{
+                return data.json()
+            })
+            .then((result)=>{
+                console.log(result);
+            })
+        }
+        function deleteData(){
+            const userData = {
+                userId : document.getElementById("delete").value
+            };
+            fetch("http://localhost:3000/user/"+userData.userId,{
+                method : "DELETE",
+                headers : {
+                    'Accept': "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+
+                }
+            }).then((data)=>{
+                return data.json()
+            })
+            .then((result)=>{
+                console.log(result);
+            })
+            
+        }
+    </script>
+</body>
+</html>
